@@ -12,4 +12,5 @@ export interface PersonalBlogRepository{
   findAll():Promise<Personal[]>
   findById(id: string):Promise<Personal>
   delete(id: string):Promise<Personal>
+  update(data: Personal):Promise<Personal>
 }

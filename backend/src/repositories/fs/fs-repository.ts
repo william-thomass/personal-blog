@@ -4,10 +4,40 @@ import type { Personal, PersonalBlogRepository } from "../personal-blog-reposito
 import { randomUUID } from "node:crypto";
 
 
+
 export class FsRepository implements PersonalBlogRepository{
   
   public filePath = path.resolve(process.cwd(), 'db.json')
   
+  async update(data: Personal): Promise<Personal> {
+    const articles = await this.findAll()
+
+    const updateArticle = articles.map( item => {
+      if(item.id === data.id){
+        return {
+          ...item,
+          ...data,
+          updatedAt: new Date()
+        }
+      }
+
+      return item
+    })
+
+    const articleExists = articles.some( item => item.id === data.id)
+    if(!articleExists){
+      throw new Error('Article Not found')
+    }
+
+    await fs.writeFile(
+      this.filePath,
+      JSON.stringify(updateArticle, null, 2),
+      'utf-8',
+    )
+  
+    return {...data, updatedAt: new Date() }
+  }
+
   async delete(id: string): Promise<Personal> {
     const articles = await this.findAll()
 
