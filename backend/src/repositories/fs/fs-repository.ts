@@ -1,13 +1,13 @@
 import path from "node:path";
 import fs from 'node:fs/promises'
-import type { Personal, PersonalBlogRepository } from "../personal-blog-repository.js";
+import type { Personal, PersonalBlogRepository} from "../personal-blog-repository.js";
 import { randomUUID } from "node:crypto";
 
 
 
 export class FsRepository implements PersonalBlogRepository{
-  
   public filePath = path.resolve(process.cwd(), 'db.json')
+  
   
   async update(data: Personal): Promise<Personal> {
     const articles = await this.findAll()
