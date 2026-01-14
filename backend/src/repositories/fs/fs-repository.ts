@@ -5,9 +5,27 @@ import { randomUUID } from "node:crypto";
 
 
 export class FsRepository implements PersonalBlogRepository{
- 
+  
   public filePath = path.resolve(process.cwd(), 'db.json')
   
+  async delete(id: string): Promise<Personal> {
+    const articles = await this.findAll()
+
+    const article = await this.findById(id)
+
+    const newArticles = articles.filter(item => item.id !== id)
+  
+    await fs.writeFile(
+      this.filePath,
+      JSON.stringify(newArticles, null, 2),
+      'utf-8'
+    )
+
+    return article
+  
+  }
+
+
    async findById(id: string): Promise<Personal> {
     const articles = await this.findAll()
     const article = articles.find(item => item.id === id)
