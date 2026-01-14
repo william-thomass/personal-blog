@@ -10,4 +10,5 @@ updatedAt?: Date
 export interface PersonalBlogRepository{
   create(articles: Personal): Promise<Personal> 
   findAll():Promise<Personal[]>
+  findById(id: string):Promise<Personal>
 }

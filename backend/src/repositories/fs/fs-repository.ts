@@ -8,6 +8,16 @@ export class FsRepository implements PersonalBlogRepository{
  
   public filePath = path.resolve(process.cwd(), 'db.json')
   
+   async findById(id: string): Promise<Personal> {
+    const articles = await this.findAll()
+    const article = articles.find(item => item.id === id)
+
+    if(!article || undefined){
+      throw new Error('Id invalid!')
+    }
+
+    return article
+  }
 
    async findAll(): Promise<Personal[]> {
     try {
